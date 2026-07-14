@@ -1,3 +1,5 @@
+"""Views for displaying and managing articles."""
+
 import requests
 
 from django.contrib import messages
@@ -176,6 +178,7 @@ def create_article(request):
         form = ArticleForm()
 
     return render(request, "news/article_form.html", {"form": form})
+
 
 @login_required
 def edit_article(request, article_id):
@@ -395,9 +398,9 @@ def edit_publisher(request, pk):
 
     if request.method == "POST":
         form = PublisherForm(
-            request.POST, 
-            instance=publisher, 
-            current_user=request.user,
+                request.POST, 
+                instance=publisher, 
+                current_user=request.user,
             )
 
         if form.is_valid():
@@ -406,8 +409,8 @@ def edit_publisher(request, pk):
             return redirect("dashboard")
     else:
         form = PublisherForm(
-        instance=publisher,
-        current_user=request.user,
+            instance=publisher,
+            current_user=request.user,
         )
 
     return render(
@@ -448,6 +451,7 @@ def approved_article_log_api(request):
         },
         status=status.HTTP_201_CREATED,
     )
+
 
 class ArticleListCreateApi(APIView):
     """
