@@ -138,7 +138,7 @@ SQLite Database
 # Installation
 
 ```bash
-git clone https://github.com/your-username/news-publishing-platform.git
+git clone https://github.com/hamza247/news_project.git
 cd news-publishing-platform
 
 python3 -m venv venv
