@@ -1,157 +1,264 @@
-# Capstone Project - Django News Application
+# 📰 News Publishing Platform
 
-## Overview
+![Python](https://img.shields.io/badge/Python-3.14-blue?logo=python)
+![Django](https://img.shields.io/badge/Django-6-success?logo=django)
+![DRF](https://img.shields.io/badge/Django_REST_Framework-3.17-red)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
+![SQLite](https://img.shields.io/badge/SQLite-Database-blue)
+![Sphinx](https://img.shields.io/badge/Sphinx-Documentation-orange)
 
-This project is a Django-based news application. It allows readers to view approved articles, journalists to create articles and newsletters, and editors to review and approve submitted articles.
+A role-based news publishing platform built with **Django**, **Django REST Framework**, **Docker**, and **Sphinx**.
 
-The application includes:
+---
 
-- Custom user roles
-- Group-based permissions
-- Article publishing workflow
-- Newsletters
-- RESTful API
-- Token authentication
-- Email notification
-- Internal API logging
-- Automated unit tests
-- MariaDB configuration support
+# Table of Contents
 
-## User Roles
+- Overview
+- Features
+- Technology Stack
+- System Architecture
+- User Roles
+- Database Models
+- REST API
+- Installation
+- Docker
+- Project Structure
+- Documentation
+- Testing
+- Security
+- Roadmap
+- Contributing
+- Author
+- License
 
-### Reader
+---
 
-Readers can:
+# Overview
 
-- View approved articles
-- View newsletters
+This application simulates a real-world editorial workflow.
+
+Journalists create articles, editors review and approve content, publishers manage publications, and readers subscribe to publishers or journalists to receive approved news.
+
+---
+
+# Features
+
+## Authentication
+- Custom Django User model
+- Login & Logout
+- User Registration
+- Token Authentication
+- Role-based authorization
+
+## Content Management
+- Create articles
+- Edit articles
+- Delete articles
+- Article approval workflow
+- Newsletter management
+- Publisher management
+
+## Reader Features
 - Subscribe to publishers
 - Subscribe to journalists
+- Browse approved articles
+- Read newsletters
 
-### Journalist
+## Notifications
+- Email notifications after approval
+- Internal approval logging API
 
-Journalists can:
+---
 
-- Create articles
-- Create newsletters
-- View their content
-- Update or delete their own articles
+# Technology Stack
 
-Articles submitted by journalists must be approved by an editor before they are visible to readers.
+| Category | Technology |
+|-----------|------------|
+| Language | Python 3.14 |
+| Framework | Django 6 |
+| API | Django REST Framework |
+| Database | SQLite (MariaDB Ready) |
+| Documentation | Sphinx |
+| Containerization | Docker |
+| Testing | pytest |
 
-### Editor
+---
 
-Editors can:
-
-- View submitted articles
-- Approve articles
-- Update articles
-- Delete articles
-- Create and manage newsletters
-
-## Models
-
-### CustomUser
-
-Extends Django's default user model and adds a role field.
-
-Roles:
-
-- reader
-- journalist
-- editor
-
-Reader-related fields:
-
-- subscribed_publishers
-- subscribed_journalists
-
-### Publisher
-
-Represents a curated news publication.
-
-A publisher can have:
-
-- multiple editors
-- multiple journalists
-- multiple subscribed readers
-
-### Article
-
-Represents a news article.
-
-Fields include:
-
-- title
-- content
-- author
-- created_at
-- approved
-- publisher
-
-### Newsletter
-
-Represents a curated collection of articles.
-
-Fields include:
-
-- title
-- description
-- author
-- articles
-- created_at
-
-### ApprovedArticleLog
-
-Stores approved article logs sent to the internal REST API endpoint.
-
-## Database Normalization
-
-The database design follows normalization principles.
-
-### First Normal Form
-
-All model fields contain atomic values.
-
-### Second Normal Form
-
-Each non-key field depends on the primary key of its table.
-
-### Third Normal Form
-
-Related data is separated into different tables.
-
-Examples:
-
-- User data is stored in CustomUser.
-- Publisher data is stored in Publisher.
-- Article data is stored in Article.
-- Newsletter data is stored in Newsletter.
-- Many-to-many relationships are used for subscriptions and newsletter articles.
-
-## UI/UX Planning
-
-The user interface is simple and role-focused.
-
-### Pages
-
-- Home page
-- Create article page
-- Create newsletter page
-- Editor review page
-- Article approval page
-
-### Design Goals
-
-- Clear navigation
-- Simple approval workflow
-- Easy article reading experience
-- Separate actions based on user role
-- Minimal interface to reduce user confusion
-
-## REST API Endpoints
-
-### Authentication
+# System Architecture
 
 ```text
-POST /api/token/
+Client
+   │
+   ▼
+Django Views / REST API
+   │
+Business Logic
+   │
+Django ORM
+   │
+SQLite Database
+```
+
+---
+
+# User Roles
+
+| Role | Permissions |
+|------|-------------|
+| Reader | Read approved articles, subscribe |
+| Journalist | Create/edit/delete own articles, newsletters |
+| Editor | Review and approve articles |
+| Publisher | Manage publications, editors, journalists |
+
+---
+
+# Database Models
+
+- CustomUser
+- Publisher
+- Article
+- Newsletter
+- ApprovedArticleLog
+
+---
+
+# REST API
+
+| Method | Endpoint |
+|---------|----------|
+| POST | `/api/token/` |
+| GET/POST | `/api/articles/` |
+| GET | `/api/articles/subscribed/` |
+| GET/PUT/DELETE | `/api/articles/{id}/` |
+| GET/POST | `/api/newsletters/` |
+| POST | `/api/approved/` |
+
+---
+
+# Installation
+
+```bash
+git clone https://github.com/your-username/news-publishing-platform.git
+cd news-publishing-platform
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Application:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+# Docker
+
+Build:
+
+```bash
+docker build -t django-capstone .
+```
+
+Run:
+
+```bash
+docker run --rm -p 8000:8000 django-capstone
+```
+
+---
+
+# Project Structure
+
+```text
+news_project/
+├── docs/
+├── news/
+├── news_project/
+├── Dockerfile
+├── requirements.txt
+├── manage.py
+└── README.md
+```
+
+---
+
+# Documentation
+
+Generate documentation:
+
+```bash
+cd docs
+make html
+```
+
+Output:
+
+```
+docs/build/html/index.html
+```
+
+---
+
+# Testing
+
+```bash
+python manage.py test
+pytest
+```
+
+---
+
+# Security
+
+- Django authentication
+- Token authentication
+- Role-based permissions
+- ORM protection against SQL injection
+- CSRF protection
+- Form and serializer validation
+
+---
+
+# Roadmap
+
+- Image uploads
+- Rich text editor
+- Categories
+- Search
+- Comments
+- Swagger/OpenAPI
+- GitHub Actions
+- PostgreSQL support
+- Docker Compose
+- Cloud deployment
+
+---
+
+# Contributing
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Open a Pull Request.
+
+---
+
+# Author
+
+**Hamza Massaoui**
+
+Software Engineer
+
+---
+
+# License
+
+MIT License
