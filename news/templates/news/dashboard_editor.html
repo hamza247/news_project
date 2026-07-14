@@ -1,0 +1,45 @@
+{% extends "news/base.html" %}
+{% block title %}Editor Dashboard · NewsHub{% endblock %}
+{% block content %}
+<h1>Editor Dashboard</h1>
+<p class="subtitle">Review submitted articles and manage newsletters.</p>
+
+<div class="card-actions">
+  <a class="btn" href="{% url 'review_articles' %}">Review Queue</a>
+  <a class="btn" href="{% url 'create_newsletter' %}">+ New Newsletter</a>
+</div>
+
+<h2>Articles Awaiting Approval</h2>
+{% for article in pending_articles %}
+<article class="card">
+  <h3>{{ article.title }}</h3>
+  <p>{{ article.content|truncatewords:40 }}</p>
+  <p class="meta">
+    By {{ article.author.username }} · {{ article.created_at|date:"M j, Y" }}
+    <span class="badge badge-pending">Pending</span>
+  </p>
+  <div class="card-actions">
+    <a class="btn" href="{% url 'approve_article' article.id %}"
+      >Review &amp; Approve</a
+    >
+    <a class="btn" href="{% url 'edit_article' article.id %}">Edit</a>
+    <a class="btn" href="{% url 'delete_article' article.id %}">Delete</a>
+  </div>
+</article>
+{% empty %}
+<p class="empty">No articles are waiting for approval.</p>
+{% endfor %}
+
+<h2>Newsletters</h2>
+{% for newsletter in newsletters %}
+<article class="card">
+  <h3>{{ newsletter.title }}</h3>
+  <p>{{ newsletter.description }}</p>
+  <p class="meta">
+    By {{ newsletter.author.username }} · {{ newsletter.articles.count }}
+    article(s)
+  </p>
+</article>
+{% empty %}
+<p class="empty">No newsletters yet.</p>
+{% endfor %} {% endblock %}

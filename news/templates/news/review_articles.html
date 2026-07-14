@@ -1,0 +1,27 @@
+{% extends "news/base.html" %}
+
+{% block title %}Review Articles · NewsHub{% endblock %}
+
+{% block content %}
+<h1>Articles Waiting for Approval</h1>
+<p class="subtitle">Approve articles to publish them to readers.</p>
+
+{% for article in articles %}
+    <section class="card">
+        <h3>{{ article.title }}</h3>
+        <p>{{ article.content }}</p>
+        <p class="meta">Submitted by {{ article.author.username }} · {{ article.created_at|date:"M j, Y" }}</p>
+
+        <form class="card-actions" method="post" action="{% url 'approve_article' article.id %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Approve Article</button>
+        </form>
+    </section>
+{% empty %}
+    <p class="empty">No articles waiting for approval.</p>
+{% endfor %}
+
+<div class="card-actions">
+    <a class="btn btn-ghost" href="{% url 'dashboard' %}">Back to Dashboard</a>
+</div>
+{% endblock %}

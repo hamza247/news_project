@@ -1,0 +1,38 @@
+{% extends "news/base.html" %}
+
+{% block title %}Reader Dashboard · NewsHub{% endblock %}
+
+{% block content %}
+<h1>Reader Dashboard</h1>
+<p class="subtitle">Browse the latest published articles and newsletters.</p>
+
+<div class="card-actions">
+    <a class="btn" href="{% url 'subscriptions' %}">My Subscriptions</a>
+</div>
+
+<h2>Approved Articles</h2>
+{% for article in articles %}
+    <article class="card">
+        <h3>{{ article.title }}</h3>
+        <p>{{ article.content }}</p>
+        <p class="meta">
+            By {{ article.author.username }}
+            {% if article.publisher %} · {{ article.publisher.name }}{% endif %}
+            · {{ article.created_at|date:"M j, Y" }}
+        </p>
+    </article>
+{% empty %}
+    <p class="empty">No approved articles available yet.</p>
+{% endfor %}
+
+<h2>Newsletters</h2>
+{% for newsletter in newsletters %}
+    <article class="card">
+        <h3>{{ newsletter.title }}</h3>
+        <p>{{ newsletter.description }}</p>
+        <p class="meta">By {{ newsletter.author.username }} · {{ newsletter.articles.count }} article(s)</p>
+    </article>
+{% empty %}
+    <p class="empty">No newsletters available yet.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "news/base.html" %}
+
+{% block title %}My Subscriptions · NewsHub{% endblock %}
+
+{% block content %}
+<h1>My Subscriptions</h1>
+<p class="subtitle">Follow publishers and journalists to personalise your feed.</p>
+
+<h2>Publishers</h2>
+{% for item in publishers %}
+    <article class="card">
+        <h3>{{ item.obj.name }}</h3>
+        <p>{{ item.obj.description }}</p>
+        <form class="card-actions" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="target" value="publisher">
+            <input type="hidden" name="id" value="{{ item.obj.id }}">
+            {% if item.subscribed %}
+                <span class="badge badge-approved">Subscribed</span>
+                <button class="btn btn-danger" type="submit" name="action" value="unsubscribe">Unsubscribe</button>
+            {% else %}
+                <button class="btn" type="submit" name="action" value="subscribe">Subscribe</button>
+            {% endif %}
+        </form>
+    </article>
+{% empty %}
+    <p class="empty">No publishers available yet.</p>
+{% endfor %}
+
+<h2>Journalists</h2>
+{% for item in journalists %}
+    <article class="card">
+        <h3>{{ item.obj.username }}</h3>
+        <form class="card-actions" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="target" value="journalist">
+            <input type="hidden" name="id" value="{{ item.obj.id }}">
+            {% if item.subscribed %}
+                <span class="badge badge-approved">Subscribed</span>
+                <button class="btn btn-danger" type="submit" name="action" value="unsubscribe">Unsubscribe</button>
+            {% else %}
+                <button class="btn" type="submit" name="action" value="subscribe">Subscribe</button>
+            {% endif %}
+        </form>
+    </article>
+{% empty %}
+    <p class="empty">No journalists to follow yet.</p>
+{% endfor %}
+{% endblock %}

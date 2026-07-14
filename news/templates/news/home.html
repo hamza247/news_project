@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+
+{% block title %}Approved Articles · NewsHub{% endblock %}
+
+{% block content %}
+<h1>Approved Articles</h1>
+
+{% for article in articles %}
+    <article class="card">
+        <h3>{{ article.title }}</h3>
+        <p>{{ article.content }}</p>
+        <p class="meta">By {{ article.author.username }}</p>
+    </article>
+{% empty %}
+    <p class="empty">No approved articles available.</p>
+{% endfor %}
+{% endblock %}

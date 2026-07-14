@@ -1,0 +1,30 @@
+{% extends "news/base.html" %}
+
+{% block title %}Publisher Dashboard · NewsHub{% endblock %}
+
+{% block content %}
+<h1>Publisher Dashboard</h1>
+<p class="subtitle">Manage your publications and their contributors.</p>
+
+<div class="card-actions">
+    <a class="btn" href="{% url 'create_publisher' %}">+ New Publication</a>
+</div>
+
+<h2>My Publications</h2>
+{% for publication in publications %}
+    <article class="card">
+        <h3>{{ publication.name }}</h3>
+        <p>{{ publication.description }}</p>
+        <p class="meta">
+            {{ publication.editors.count }} editor(s) ·
+            {{ publication.journalists.count }} journalist(s) ·
+            {{ publication.articles.count }} article(s)
+        </p>
+        <div class="card-actions">
+            <a class="btn btn-ghost" href="{% url 'edit_publisher' publication.id %}">Edit</a>
+        </div>
+    </article>
+{% empty %}
+    <p class="empty">You don't manage any publications yet. Create one to get started.</p>
+{% endfor %}
+{% endblock %}

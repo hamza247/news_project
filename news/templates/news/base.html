@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}News Application{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'news/styles.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="brand" href="{% url 'dashboard' %}">📰 NewsHub</a>
+
+        <nav class="nav-links">
+            {% if user.is_authenticated %}
+                <a class="btn btn-ghost" href="{% url 'dashboard' %}">Dashboard</a>
+
+                {% if user.role == "reader" %}
+                    <a class="btn" href="{% url 'subscriptions' %}">Subscriptions</a>
+                {% elif user.role == "journalist" %}
+                    <a class="btn" href="{% url 'create_article' %}">New Article</a>
+                    <a class="btn" href="{% url 'create_newsletter' %}">New Newsletter</a>
+                {% elif user.role == "editor" %}
+                    <a class="btn" href="{% url 'review_articles' %}">Review Articles</a>
+                    <a class="btn" href="{% url 'create_newsletter' %}">New Newsletter</a>
+                {% elif user.role == "publisher" %}
+                    <a class="btn" href="{% url 'create_publisher' %}">New Publication</a>
+                {% endif %}
+
+                <span class="nav-user">{{ user.username }} · {{ user.get_role_display }}</span>
+                <form class="logout-form" method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-ghost" type="submit">Log out</button>
+                </form>
+            {% else %}
+                <a class="btn btn-ghost" href="{% url 'login' %}">Log in</a>
+                <a class="btn" href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="alert {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

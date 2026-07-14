@@ -1,0 +1,18 @@
+{% extends "news/base.html" %}
+
+{% block title %}Approve Article · NewsHub{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Confirm Article Approval</h1>
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.content }}</p>
+    <p class="meta">By {{ article.author.username }}</p>
+
+    <form class="card-actions" method="post">
+        {% csrf_token %}
+        <button class="btn" type="submit">Confirm Approval</button>
+        <a class="btn btn-ghost" href="{% url 'review_articles' %}">Back to Review</a>
+    </form>
+</div>
+{% endblock %}

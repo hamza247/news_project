@@ -1,0 +1,42 @@
+{% extends "news/base.html" %}
+
+{% block title %}Journalist Dashboard · NewsHub{% endblock %}
+
+{% block content %}
+<h1>Journalist Dashboard</h1>
+<p class="subtitle">Create and track your articles and newsletters.</p>
+
+<div class="card-actions">
+    <a class="btn" href="{% url 'create_article' %}">+ New Article</a>
+    <a class="btn" href="{% url 'create_newsletter' %}">+ New Newsletter</a>
+</div>
+
+<h2>My Articles</h2>
+{% for article in articles %}
+    <article class="card">
+        <h3>{{ article.title }}</h3>
+        <p>{{ article.content|truncatewords:40 }}</p>
+        <p class="meta">
+            {{ article.created_at|date:"M j, Y" }} ·
+            {% if article.approved %}
+                <span class="badge badge-approved">Published</span>
+            {% else %}
+                <span class="badge badge-pending">Pending review</span>
+            {% endif %}
+        </p>
+    </article>
+{% empty %}
+    <p class="empty">You haven't written any articles yet.</p>
+{% endfor %}
+
+<h2>My Newsletters</h2>
+{% for newsletter in newsletters %}
+    <article class="card">
+        <h3>{{ newsletter.title }}</h3>
+        <p>{{ newsletter.description }}</p>
+        <p class="meta">{{ newsletter.articles.count }} article(s) · {{ newsletter.created_at|date:"M j, Y" }}</p>
+    </article>
+{% empty %}
+    <p class="empty">You haven't created any newsletters yet.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+
+{% block title %}Create Newsletter · NewsHub{% endblock %}
+
+{% block content %}
+<div class="card auth-card">
+    <h1>Create Newsletter</h1>
+    <p class="subtitle">Bundle approved articles into a newsletter.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Create Newsletter</button>
+        <a class="btn btn-ghost" href="{% url 'dashboard' %}">Cancel</a>
+    </form>
+</div>
+{% endblock %}

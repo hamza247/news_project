@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+
+{% block title %}Create Article · NewsHub{% endblock %}
+
+{% block content %}
+<div class="card auth-card">
+    <h1>Create Article</h1>
+    <p class="subtitle">Your article will be submitted for editor review.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Submit Article</button>
+        <a class="btn btn-ghost" href="{% url 'dashboard' %}">Cancel</a>
+    </form>
+</div>
+{% endblock %}
