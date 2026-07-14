@@ -1,3 +1,5 @@
+"""Models used by the News application."""
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
