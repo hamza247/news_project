@@ -1,3 +1,5 @@
+"""URL configuration for the News application."""
+
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token

@@ -1,3 +1,5 @@
+"""Serializers for the News REST API."""
+
 from rest_framework import serializers
 
 from .models import Article, CustomUser, Newsletter, Publisher
